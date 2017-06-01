@@ -970,15 +970,17 @@ public class ThreadSafeEventService implements EventService {
                try {
                   eventSubscriber.onEvent(event);
                   checkTimeLimit(start, event, eventSubscriber, null);
-               } catch (Throwable e) {
+               } catch (Exception e) {
                   checkTimeLimit(start, event, eventSubscriber, null);
+				  if(e instanceof RuntimeException) throw (RuntimeException)e;
                   handleException(event, e, callingStack, eventSubscriber);
                }
             } else {
                EventTopicSubscriber eventTopicSubscriber = (EventTopicSubscriber) eh;
                try {
                   eventTopicSubscriber.onEvent(topic, eventObj);
-               } catch (Throwable e) {
+               } catch (Exception e) {
+				  if(e instanceof RuntimeException) throw (RuntimeException)e;
                   onEventException(topic, eventObj, e, callingStack, eventTopicSubscriber);
                }
             }

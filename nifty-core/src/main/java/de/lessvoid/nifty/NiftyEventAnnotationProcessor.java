@@ -1,6 +1,7 @@
 package de.lessvoid.nifty;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,7 +132,8 @@ public class NiftyEventAnnotationProcessor {
       if (eventClass.isInstance(data)) {
         try {
           method.invoke(obj, topic, eventClass.cast(data));
-        } catch (Throwable e) {
+        } catch (Exception e) {
+		  if(e instanceof InvocationTargetException && e.getCause() instanceof RuntimeException) throw (RuntimeException)e.getCause();
           log.log(Level.WARNING, "failed to invoke method [" + method + "] with Exception [" + e.getMessage() + "][" + e.getCause() + "]", e);
         }
       }
