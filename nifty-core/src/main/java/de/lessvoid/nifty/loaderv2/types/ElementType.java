@@ -406,9 +406,9 @@ public class ElementType extends XmlBaseType {
       if (styleType != null) {
         styleType.applyTo(this, styleResolver);
       }
-      if (!style.startsWith("#")) {
+      //if (!style.startsWith("#")) {
         return new StyleResolverControlDefinintion(styleResolver, style);
-      }
+      //}
     }
     return styleResolver;
   }
